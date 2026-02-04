@@ -1,0 +1,397 @@
+{
+  "metadata": {
+    "title": "Tulsa vs Austin: The Next Tech Hub?",
+    "subtitle": "A data-driven comparison of two cities competing for tech talent",
+    "author": "Tulsa Software",
+    "date": "2026-02-03",
+    "lastUpdated": "2026-02-03"
+  },
+  "sections": {
+    "salaryIllusion": {
+      "title": "The Illusion of the Big Salary",
+      "description": "Austin offers higher nominal salaries, but cost of living eats the difference \u2014 and then some.",
+      "data": {
+        "austinSoftwareDeveloperSalary": {
+          "value": 139390,
+          "label": "Austin Software Developer Mean Salary",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm"
+        },
+        "tulsaComputerMathMeanSalary": {
+          "value": 94682,
+          "label": "Tulsa Computer & Mathematical Mean Salary",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
+          "note": "Mean hourly $45.52 \u00d7 2,080 hours"
+        },
+        "austinComputerMathMeanSalary": {
+          "value": 116820,
+          "label": "Austin Computer & Mathematical Mean Salary",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm",
+          "note": "Mean hourly $56.16 \u00d7 2,080 hours"
+        },
+        "costOfLivingDifference": {
+          "value": 57.0,
+          "unit": "percent",
+          "label": "Austin is 57% more expensive than Tulsa",
+          "source": "BestPlaces.net Cost of Living Calculator, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost-of-living/tulsa-ok/austin-tx/100000"
+        },
+        "austinSalaryAdjustedToTulsa": {
+          "value": 88761,
+          "label": "Austin $139,390 salary purchasing power equivalent in Tulsa",
+          "source": "BestPlaces.net Cost of Living Calculator, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost-of-living/austin-tx/tulsa-ok/139390"
+        },
+        "tulsaSalaryEquivalentInAustin": {
+          "value": 157039,
+          "label": "$100K Tulsa salary equivalent needed in Austin",
+          "source": "BestPlaces.net Cost of Living Calculator, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost-of-living/tulsa-ok/austin-tx/100000"
+        },
+        "austinMeanAllOccupations": {
+          "value": 71386,
+          "label": "Austin Mean Wage All Occupations",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm",
+          "note": "Mean hourly $34.32 \u00d7 2,080 hours"
+        },
+        "tulsaMeanAllOccupations": {
+          "value": 57242,
+          "label": "Tulsa Mean Wage All Occupations",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
+          "note": "Mean hourly $27.52 \u00d7 2,080 hours"
+        }
+      }
+    },
+    "housingComparison": {
+      "title": "What Your Money Actually Buys",
+      "description": "The same dollar goes dramatically further in Tulsa than in Austin.",
+      "data": {
+        "austinMedianHome": {
+          "value": 577400,
+          "label": "Austin Typical Home Price",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost_of_living/city/texas/austin",
+          "note": "70.8% above national average of $338,100"
+        },
+        "tulsaMedianHome": {
+          "value": 179100,
+          "label": "Tulsa Typical Home Price",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost_of_living/city/oklahoma/tulsa",
+          "note": "47.0% below national average of $338,100"
+        },
+        "austinMedianHomeCensus": {
+          "value": 512700,
+          "label": "Austin Median Property Value (Census)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/austin-tx"
+        },
+        "tulsaMedianHomeCensus": {
+          "value": 189600,
+          "label": "Tulsa Median Property Value (Census)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "austin2BRRent": {
+          "value": 1720,
+          "label": "Austin 2-Bedroom Rent (monthly)",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost_of_living/city/texas/austin"
+        },
+        "tulsa2BRRent": {
+          "value": 1020,
+          "label": "Tulsa 2-Bedroom Rent (monthly)",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost_of_living/city/oklahoma/tulsa"
+        },
+        "housingIndexTulsa": {
+          "value": 51.6,
+          "label": "Tulsa Housing Cost Index (100 = national avg)",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/compare-cities/tulsa-ok/austin-tx/costofliving"
+        },
+        "housingPriceRatio": {
+          "value": 3.22,
+          "label": "Austin homes cost 3.22\u00d7 more than Tulsa homes",
+          "note": "$577,400 / $179,100"
+        },
+        "nationalMedianHome": {
+          "value": 338100,
+          "label": "National Average Home Price",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/cost_of_living/city/texas/austin"
+        }
+      }
+    },
+    "tulsaGrowth": {
+      "title": "Tulsa Isn't Just Cheap \u2014 It's Building",
+      "description": "Tulsa is an affordable city with a growing tech and industrial economy.",
+      "data": {
+        "tulsaPopulation": {
+          "value": 412322,
+          "label": "Tulsa Population (2023)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "austinPopulation": {
+          "value": 967862,
+          "label": "Austin Population (2023)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/austin-tx"
+        },
+        "tulsaEmployed": {
+          "value": 196427,
+          "label": "Tulsa Employed Population (2023)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "austinEmployed": {
+          "value": 578459,
+          "label": "Austin Employed Population (2023)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/austin-tx"
+        },
+        "tulsaUnemployment": {
+          "value": 4.7,
+          "label": "Tulsa Unemployment Rate",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/economy/city/oklahoma/tulsa"
+        },
+        "austinUnemployment": {
+          "value": 5.1,
+          "label": "Austin Unemployment Rate",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/economy/city/texas/austin"
+        },
+        "tulsaFutureJobGrowth": {
+          "value": 29.5,
+          "label": "Tulsa Predicted 10-Year Job Growth (%)",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/economy/city/oklahoma/tulsa"
+        },
+        "austinFutureJobGrowth": {
+          "value": 47.0,
+          "label": "Austin Predicted 10-Year Job Growth (%)",
+          "source": "BestPlaces.net, 2026",
+          "sourceUrl": "https://www.bestplaces.net/economy/city/texas/austin"
+        },
+        "tulsaManufacturingShare": {
+          "value": 8.1,
+          "label": "Tulsa Manufacturing Share of Employment (%)",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
+          "note": "National average is 5.7%"
+        },
+        "tulsaManufacturingJobs": {
+          "value": 19512,
+          "label": "Tulsa Manufacturing Jobs",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "majorTulsaEmployers": [
+          "American Airlines",
+          "BOK Financial Corporation",
+          "QuikTrip Corporation",
+          "Williams Companies",
+          "ONEOK",
+          "Helmerich & Payne"
+        ],
+        "tulsaTechPresence": {
+          "description": "Google and Amazon have operations in the Tulsa region, alongside international aerospace companies and Fortune 500 headquarters.",
+          "source": "Tulsa's Future / Tulsa Regional Chamber",
+          "sourceUrl": "https://tulsasfuture.com"
+        },
+        "tulsaMedianHouseholdIncome": {
+          "value": 58407,
+          "label": "Tulsa Median Household Income (2023)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "austinMedianHouseholdIncome": {
+          "value": 91461,
+          "label": "Austin Median Household Income (2023)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/austin-tx"
+        },
+        "tulsaCommuteTime": {
+          "value": 18.7,
+          "label": "Tulsa Average Commute (minutes)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "austinCommuteTime": {
+          "value": 24.0,
+          "label": "Austin Average Commute (minutes)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/austin-tx"
+        },
+        "tulsaHomeownership": {
+          "value": 52.0,
+          "label": "Tulsa Homeownership Rate (%)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/tulsa-ok"
+        },
+        "austinHomeownership": {
+          "value": 44.4,
+          "label": "Austin Homeownership Rate (%)",
+          "source": "U.S. Census Bureau ACS 2023 via DataUSA",
+          "sourceUrl": "https://datausa.io/profile/geo/austin-tx"
+        },
+        "petroleumLQ": {
+          "value": 5.62,
+          "label": "Tulsa Petroleum Operators Location Quotient",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
+          "note": "5.62\u00d7 the national rate"
+        },
+        "installationRepairWage": {
+          "tulsaHourly": 30.28,
+          "nationalHourly": 29.63,
+          "label": "Tulsa Installation & Repair wages exceed national average",
+          "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
+          "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm"
+        }
+      }
+    },
+    "punchline": {
+      "title": "The Punchline",
+      "description": "When you adjust for reality, Tulsa is a compelling alternative.",
+      "data": {
+        "summaryComparison": [
+          {
+            "metric": "Nominal Salary",
+            "austin": "$139,390",
+            "tulsa": "$94,682",
+            "austinValue": 139390,
+            "tulsaValue": 94682,
+            "note": "BLS Computer & Math mean for Tulsa; Software Dev mean for Austin",
+            "winner": "austin"
+          },
+          {
+            "metric": "COL-Adjusted Salary",
+            "austin": "$88,761",
+            "tulsa": "$94,682",
+            "austinValue": 88761,
+            "tulsaValue": 94682,
+            "note": "Austin salary of $139,390 has purchasing power of $88,761 in Tulsa terms",
+            "winner": "tulsa"
+          },
+          {
+            "metric": "Home Price",
+            "austin": "$577,400",
+            "tulsa": "$179,100",
+            "austinValue": 577400,
+            "tulsaValue": 179100,
+            "winner": "tulsa"
+          },
+          {
+            "metric": "2BR Rent",
+            "austin": "$1,720/mo",
+            "tulsa": "$1,020/mo",
+            "austinValue": 1720,
+            "tulsaValue": 1020,
+            "winner": "tulsa"
+          },
+          {
+            "metric": "Unemployment",
+            "austin": "5.1%",
+            "tulsa": "4.7%",
+            "austinValue": 5.1,
+            "tulsaValue": 4.7,
+            "winner": "tulsa"
+          },
+          {
+            "metric": "Homeownership",
+            "austin": "44.4%",
+            "tulsa": "52.0%",
+            "austinValue": 44.4,
+            "tulsaValue": 52.0,
+            "winner": "tulsa"
+          },
+          {
+            "metric": "Avg Commute",
+            "austin": "24 min",
+            "tulsa": "18.7 min",
+            "austinValue": 24,
+            "tulsaValue": 18.7,
+            "winner": "tulsa"
+          },
+          {
+            "metric": "Job Growth (10yr)",
+            "austin": "47.0%",
+            "tulsa": "29.5%",
+            "austinValue": 47.0,
+            "tulsaValue": 29.5,
+            "winner": "austin"
+          }
+        ]
+      }
+    }
+  },
+  "sources": [
+    {
+      "name": "U.S. Bureau of Labor Statistics \u2014 Austin OEWS May 2024",
+      "url": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "U.S. Bureau of Labor Statistics \u2014 Tulsa OEWS May 2024",
+      "url": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "BestPlaces.net \u2014 Austin, TX Cost of Living",
+      "url": "https://www.bestplaces.net/cost_of_living/city/texas/austin",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "BestPlaces.net \u2014 Tulsa, OK Cost of Living",
+      "url": "https://www.bestplaces.net/cost_of_living/city/oklahoma/tulsa",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "BestPlaces.net \u2014 Cost of Living Calculator: Tulsa vs Austin",
+      "url": "https://www.bestplaces.net/cost-of-living/tulsa-ok/austin-tx/100000",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "BestPlaces.net \u2014 Compare Cities: Tulsa vs Austin Cost of Living",
+      "url": "https://www.bestplaces.net/compare-cities/tulsa-ok/austin-tx/costofliving",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "BestPlaces.net \u2014 Tulsa Economy",
+      "url": "https://www.bestplaces.net/economy/city/oklahoma/tulsa",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "BestPlaces.net \u2014 Austin Economy",
+      "url": "https://www.bestplaces.net/economy/city/texas/austin",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "U.S. Census Bureau ACS 2023 \u2014 Tulsa, OK (via DataUSA)",
+      "url": "https://datausa.io/profile/geo/tulsa-ok",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "U.S. Census Bureau ACS 2023 \u2014 Austin, TX (via DataUSA)",
+      "url": "https://datausa.io/profile/geo/austin-tx",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "Tulsa's Future \u2014 Tulsa Regional Chamber Economic Development",
+      "url": "https://tulsasfuture.com",
+      "accessed": "2026-02-03"
+    },
+    {
+      "name": "Tulsa Remote",
+      "url": "https://www.tulsaremote.com",
+      "accessed": "2026-02-03"
+    }
+  ]
+}

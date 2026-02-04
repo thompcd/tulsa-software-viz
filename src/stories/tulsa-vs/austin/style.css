@@ -1,0 +1,521 @@
+/* ============================================
+   Tulsa vs Austin — Scrollytelling Styles
+   NYT-inspired, Georgia/system fonts, clean
+   ============================================ */
+
+:root {
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --color-bg: #fafaf7;
+  --color-text: #1a1a1a;
+  --color-text-light: #6b6b6b;
+  --color-accent: #c23616;
+  --color-tulsa: #2d6a4f;
+  --color-austin: #e07b39;
+  --color-tulsa-light: #d8f3dc;
+  --color-austin-light: #fce4cc;
+  --color-border: #e0ddd5;
+  --color-card: #ffffff;
+  --max-width-text: 640px;
+  --max-width-chart: 720px;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
+  font-family: var(--font-serif);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ─────────────────────── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: rgba(250, 250, 247, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+}
+
+.header__brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.header__series {
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+/* ── Hero ─────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.hero__content {
+  max-width: 680px;
+}
+
+.hero__kicker {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+}
+
+.hero__title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.hero__subtitle em {
+  font-style: italic;
+  color: var(--color-text);
+}
+
+.hero__byline {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin-bottom: 3rem;
+}
+
+.hero__scroll-hint {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  opacity: 0.6;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* ── Scrollytelling Layout ─────────────────────── */
+.scrolly {
+  position: relative;
+  display: flex;
+  padding: 0;
+}
+
+.scrolly__graphic {
+  position: sticky;
+  top: 0;
+  width: 55%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: var(--max-width-chart);
+}
+
+.chart-container svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.scrolly__text {
+  position: relative;
+  width: 45%;
+  padding: 0 2rem;
+  z-index: 2;
+}
+
+.step {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  margin: 0;
+  opacity: 0.25;
+  transition: opacity 0.4s ease;
+}
+
+.step.is-active {
+  opacity: 1;
+}
+
+.step h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.step p {
+  margin-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+
+.step strong {
+  color: var(--color-text);
+}
+
+.step__accent {
+  font-size: 1.3rem !important;
+  font-weight: 700;
+  color: var(--color-tulsa);
+  line-height: 1.4;
+  margin-top: 0.5rem;
+  padding: 1rem 0;
+  border-top: 2px solid var(--color-tulsa);
+}
+
+.step__source {
+  font-family: var(--font-sans);
+  font-size: 0.7rem !important;
+  color: var(--color-text-light);
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+/* ── Chart Styles ─────────────────────── */
+.bar-tulsa {
+  fill: var(--color-tulsa);
+}
+
+.bar-austin {
+  fill: var(--color-austin);
+}
+
+.bar-adjusted {
+  fill: var(--color-austin);
+  opacity: 0.4;
+  stroke: var(--color-austin);
+  stroke-width: 2;
+  stroke-dasharray: 6 3;
+}
+
+.bar-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--color-text);
+}
+
+.bar-value {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bar-value.tulsa { fill: var(--color-tulsa); }
+.bar-value.austin { fill: var(--color-austin); }
+.bar-value.adjusted { fill: var(--color-austin); opacity: 0.6; }
+
+.axis-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  fill: var(--color-text-light);
+}
+
+.chart-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--color-text);
+}
+
+.chart-subtitle {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--color-text-light);
+}
+
+.legend-dot {
+  r: 5;
+}
+
+.legend-text {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--color-text);
+}
+
+.annotation {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--color-accent);
+  font-weight: 600;
+}
+
+.annotation-line {
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 2;
+}
+
+.grid-line {
+  stroke: var(--color-border);
+  stroke-width: 0.5;
+}
+
+/* House icons / visual elements */
+.house-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.house-block {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* Scorecard for punchline */
+.scorecard {
+  font-family: var(--font-sans);
+}
+
+.scorecard-row {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.scorecard-metric {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--color-text);
+}
+
+.scorecard-value {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.winner-badge {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  fill: white;
+}
+
+/* ── Sources / Footer ─────────────────────── */
+.sources {
+  background: #f0efeb;
+  padding: 4rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.sources__content {
+  max-width: var(--max-width-text);
+  margin: 0 auto;
+}
+
+.sources h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.sources__note {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-sans);
+}
+
+.sources__list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.sources__list li {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-light);
+}
+
+.sources__list li a {
+  color: var(--color-tulsa);
+  text-decoration: none;
+}
+
+.sources__list li a:hover {
+  text-decoration: underline;
+}
+
+.sources__footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.sources__footer p {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+}
+
+.sources__footer a {
+  color: var(--color-tulsa);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.sources__methodology {
+  font-size: 0.7rem !important;
+  line-height: 1.6;
+  margin-top: 1rem !important;
+}
+
+/* ── Responsive ─────────────────────── */
+@media (max-width: 900px) {
+  html {
+    font-size: 16px;
+  }
+
+  .hero__title {
+    font-size: 2.2rem;
+  }
+
+  .scrolly {
+    flex-direction: column;
+    position: relative;
+  }
+
+  .scrolly__graphic {
+    position: sticky;
+    top: 48px; /* below header */
+    width: 100%;
+    height: 40vh;
+    padding: 1rem;
+    z-index: 1;
+    background: var(--color-bg);
+  }
+
+  .scrolly__text {
+    position: relative;
+    width: 100%;
+    padding: 0 1rem;
+    z-index: 2;
+    /* Push text below the sticky chart */
+    margin-top: -5vh;
+  }
+
+  .step {
+    min-height: auto;
+    padding: 2rem 1.25rem;
+    background: rgba(250, 250, 247, 0.95);
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    /* Space steps so scrollama triggers each one separately */
+    margin-bottom: 45vh;
+    /* Always visible on mobile — don't fade inactive steps */
+    opacity: 1 !important;
+  }
+
+  .step:last-child {
+    margin-bottom: 30vh;
+  }
+
+  .step h2 {
+    font-size: 1.4rem;
+  }
+
+  .step p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 85vh;
+    padding: 3rem 1.25rem;
+  }
+
+  .hero__title {
+    font-size: 1.8rem;
+  }
+
+  .hero__subtitle {
+    font-size: 1rem;
+  }
+
+  .scrolly__graphic {
+    height: 35vh;
+    padding: 0.75rem;
+  }
+
+  .step {
+    margin-bottom: 50vh;
+    padding: 1.5rem 1rem;
+  }
+
+  .step:last-child {
+    margin-bottom: 35vh;
+  }
+
+  .step__accent {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* ── Transitions ─────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
