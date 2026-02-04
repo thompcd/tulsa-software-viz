@@ -28,7 +28,6 @@
 
 html {
   font-size: 18px;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -457,12 +456,14 @@ body {
     border-radius: 8px;
     margin: 1rem 0;
     box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-    /* Ensure enough spacing so each step triggers separately */
-    margin-bottom: 60vh;
+    /* Space steps so scrollama triggers each one separately */
+    margin-bottom: 45vh;
+    /* Always visible on mobile — don't fade inactive steps */
+    opacity: 1 !important;
   }
 
   .step:last-child {
-    margin-bottom: 40vh;
+    margin-bottom: 30vh;
   }
 
   .step h2 {
@@ -494,12 +495,12 @@ body {
   }
 
   .step {
-    margin-bottom: 70vh;
+    margin-bottom: 50vh;
     padding: 1.5rem 1rem;
   }
 
   .step:last-child {
-    margin-bottom: 50vh;
+    margin-bottom: 35vh;
   }
 
   .step__accent {
