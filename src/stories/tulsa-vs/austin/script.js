@@ -938,6 +938,8 @@ function initScrollama() {
     { id: 'scrolly-punchline', createChart: createPunchlineChart, updateChart: updatePunchlineChart },
   ];
 
+  const isMobile = window.innerWidth <= 900;
+
   sections.forEach(section => {
     section.createChart();
 
@@ -945,7 +947,8 @@ function initScrollama() {
     scroller
       .setup({
         step: `#${section.id} .step`,
-        offset: 0.5,
+        // On mobile, trigger when step reaches the bottom of the sticky chart area
+        offset: isMobile ? 0.7 : 0.5,
         debug: false,
       })
       .onStepEnter(({ element }) => {

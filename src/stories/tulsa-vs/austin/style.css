@@ -428,48 +428,82 @@ body {
 
   .scrolly {
     flex-direction: column;
+    position: relative;
   }
 
   .scrolly__graphic {
     position: sticky;
+    top: 48px; /* below header */
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     padding: 1rem;
+    z-index: 1;
+    background: var(--color-bg);
   }
 
   .scrolly__text {
+    position: relative;
     width: 100%;
     padding: 0 1rem;
+    z-index: 2;
+    /* Push text below the sticky chart */
+    margin-top: -5vh;
   }
 
   .step {
-    min-height: 60vh;
-    padding: 1.5rem 1rem;
-    background: rgba(250, 250, 247, 0.92);
+    min-height: auto;
+    padding: 2rem 1.25rem;
+    background: rgba(250, 250, 247, 0.95);
     border-radius: 8px;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    /* Ensure enough spacing so each step triggers separately */
+    margin-bottom: 60vh;
+  }
+
+  .step:last-child {
+    margin-bottom: 40vh;
   }
 
   .step h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .step p {
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 600px) {
+  .hero {
+    min-height: 85vh;
+    padding: 3rem 1.25rem;
+  }
+
   .hero__title {
     font-size: 1.8rem;
   }
 
   .hero__subtitle {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .scrolly__graphic {
-    height: 40vh;
+    height: 35vh;
+    padding: 0.75rem;
   }
 
   .step {
-    min-height: 50vh;
+    margin-bottom: 70vh;
+    padding: 1.5rem 1rem;
+  }
+
+  .step:last-child {
+    margin-bottom: 50vh;
+  }
+
+  .step__accent {
+    font-size: 1.1rem !important;
   }
 }
 
