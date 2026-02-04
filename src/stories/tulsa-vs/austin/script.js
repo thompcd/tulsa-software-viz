@@ -774,146 +774,230 @@ function updatePunchlineChart(step) {
   const chart = window._punchlineChart;
   if (!chart) return;
   const { svg, width, height, margin } = chart;
+  const isMobile = width < 500;
 
   const comparison = data.sections.punchline.data.summaryComparison;
 
   if (step === 'punchline-1' || step === 'punchline-2' || step === 'punchline-3') {
     svg.selectAll('g.scorecard').remove();
 
+    const mobileMargin = isMobile ? { top: 50, right: 10, bottom: 10, left: 10 } : margin;
     const g = svg.append('g')
       .attr('class', 'scorecard')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      .attr('transform', `translate(${mobileMargin.left}, ${mobileMargin.top})`);
 
-    const innerW = width - margin.left - margin.right;
-    const rowHeight = 38;
-    const headerHeight = 30;
+    const innerW = width - mobileMargin.left - mobileMargin.right;
 
-    // Header
-    g.append('text')
-      .attr('class', 'chart-title')
-      .attr('x', 0)
-      .attr('y', -20)
-      .text('The Scorecard');
+    if (isMobile) {
+      // Mobile: stacked card layout instead of table
+      const rowHeight = 52;
 
-    // Column headers
-    const colMetric = 0;
-    const colTulsa = innerW * 0.42;
-    const colAustin = innerW * 0.64;
-    const colWinner = innerW * 0.86;
-
-    ['Metric', 'Tulsa', 'Austin', ''].forEach((label, i) => {
       g.append('text')
-        .attr('class', 'axis-label')
-        .attr('x', [colMetric, colTulsa, colAustin, colWinner][i])
-        .attr('y', headerHeight - 5)
-        .attr('font-weight', '700')
-        .text(label);
-    });
+        .attr('class', 'chart-title')
+        .attr('x', 0)
+        .attr('y', -20)
+        .attr('font-size', '14px')
+        .text('The Scorecard');
 
-    g.append('line')
-      .attr('x1', 0).attr('x2', innerW)
-      .attr('y1', headerHeight + 2).attr('y2', headerHeight + 2)
-      .attr('stroke', COLORS.border).attr('stroke-width', 1);
+      comparison.forEach((row, i) => {
+        const yPos = i * rowHeight;
+        const badgeColor = row.winner === 'tulsa' ? COLORS.tulsa : COLORS.austin;
 
-    // Rows
-    const rows = comparison.length;
-    const visibleRows = step === 'punchline-1' ? comparison : comparison;
+        // Winner badge (left side)
+        g.append('rect')
+          .attr('x', 0)
+          .attr('y', yPos + 2)
+          .attr('width', 4)
+          .attr('height', rowHeight - 10)
+          .attr('rx', 2)
+          .attr('fill', badgeColor)
+          .attr('opacity', 0)
+          .transition().duration(400).delay(i * 60)
+          .attr('opacity', 1);
 
-    visibleRows.forEach((row, i) => {
-      const yPos = headerHeight + 10 + (i * rowHeight);
+        // Metric name
+        g.append('text')
+          .attr('x', 12)
+          .attr('y', yPos + 16)
+          .attr('font-size', '10px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('font-weight', '600')
+          .attr('fill', COLORS.text)
+          .text(row.metric);
 
-      // Separator
-      if (i > 0) {
+        // Values on same line below metric
+        g.append('text')
+          .attr('x', 12)
+          .attr('y', yPos + 34)
+          .attr('font-size', '11px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('fill', COLORS.tulsa)
+          .attr('font-weight', row.winner === 'tulsa' ? '700' : '400')
+          .text(`Tulsa: ${row.tulsa}`);
+
+        g.append('text')
+          .attr('x', innerW * 0.5)
+          .attr('y', yPos + 34)
+          .attr('font-size', '11px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('fill', COLORS.austin)
+          .attr('font-weight', row.winner === 'austin' ? '700' : '400')
+          .text(`Austin: ${row.austin}`);
+
+        // Separator
+        if (i < comparison.length - 1) {
+          g.append('line')
+            .attr('x1', 0).attr('x2', innerW)
+            .attr('y1', yPos + rowHeight - 4).attr('y2', yPos + rowHeight - 4)
+            .attr('stroke', COLORS.border).attr('stroke-width', 0.5);
+        }
+      });
+
+      // Tally
+      if (step === 'punchline-2' || step === 'punchline-3') {
+        const tulsaWins = comparison.filter(r => r.winner === 'tulsa').length;
+        const austinWins = comparison.filter(r => r.winner === 'austin').length;
+        const tallyY = comparison.length * rowHeight + 10;
+
         g.append('line')
           .attr('x1', 0).attr('x2', innerW)
-          .attr('y1', yPos - 6).attr('y2', yPos - 6)
-          .attr('stroke', COLORS.border).attr('stroke-width', 0.5);
+          .attr('y1', tallyY).attr('y2', tallyY)
+          .attr('stroke', COLORS.text).attr('stroke-width', 1.5);
+
+        g.append('text')
+          .attr('x', 0)
+          .attr('y', tallyY + 22)
+          .attr('font-family', 'var(--font-sans)')
+          .attr('font-size', '13px')
+          .attr('font-weight', '800')
+          .attr('fill', COLORS.tulsa)
+          .attr('opacity', 0)
+          .transition().duration(600).delay(500)
+          .attr('opacity', 1)
+          .text(`Tulsa ${tulsaWins} — Austin ${austinWins}`);
       }
 
-      // Metric name
-      g.append('text')
-        .attr('class', 'scorecard-metric')
-        .attr('x', colMetric)
-        .attr('y', yPos + 16)
-        .attr('font-size', '11px')
-        .attr('font-family', 'var(--font-sans)')
-        .attr('fill', COLORS.text)
-        .text(row.metric);
-
-      // Tulsa value
-      g.append('text')
-        .attr('class', 'scorecard-value')
-        .attr('x', colTulsa)
-        .attr('y', yPos + 16)
-        .attr('font-size', '12px')
-        .attr('font-family', 'var(--font-sans)')
-        .attr('font-weight', '600')
-        .attr('fill', row.winner === 'tulsa' ? COLORS.tulsa : COLORS.text)
-        .text(row.tulsa);
-
-      // Austin value
-      g.append('text')
-        .attr('class', 'scorecard-value')
-        .attr('x', colAustin)
-        .attr('y', yPos + 16)
-        .attr('font-size', '12px')
-        .attr('font-family', 'var(--font-sans)')
-        .attr('font-weight', '600')
-        .attr('fill', row.winner === 'austin' ? COLORS.austin : COLORS.text)
-        .text(row.austin);
-
-      // Winner badge
-      const badgeColor = row.winner === 'tulsa' ? COLORS.tulsa : COLORS.austin;
-      const badgeX = colWinner;
-
-      g.append('rect')
-        .attr('x', badgeX)
-        .attr('y', yPos + 3)
-        .attr('width', 45)
-        .attr('height', 18)
-        .attr('rx', 9)
-        .attr('fill', badgeColor)
-        .attr('opacity', 0)
-        .transition().duration(400).delay(i * 80)
-        .attr('opacity', 1);
+    } else {
+      // Desktop: original table layout
+      const rowHeight = 38;
+      const headerHeight = 30;
 
       g.append('text')
-        .attr('class', 'winner-badge')
-        .attr('x', badgeX + 22.5)
-        .attr('y', yPos + 16)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '9px')
-        .attr('font-family', 'var(--font-sans)')
-        .attr('fill', 'white')
-        .attr('font-weight', '700')
-        .attr('opacity', 0)
-        .transition().duration(400).delay(i * 80)
-        .attr('opacity', 1)
-        .text(row.winner === 'tulsa' ? 'TULSA' : 'AUSTIN');
-    });
+        .attr('class', 'chart-title')
+        .attr('x', 0)
+        .attr('y', -20)
+        .text('The Scorecard');
 
-    // Tally at bottom
-    if (step === 'punchline-2' || step === 'punchline-3') {
-      const tulsaWins = comparison.filter(r => r.winner === 'tulsa').length;
-      const austinWins = comparison.filter(r => r.winner === 'austin').length;
-      const tallyY = headerHeight + 10 + (rows * rowHeight) + 20;
+      const colMetric = 0;
+      const colTulsa = innerW * 0.42;
+      const colAustin = innerW * 0.64;
+      const colWinner = innerW * 0.86;
+
+      ['Metric', 'Tulsa', 'Austin', ''].forEach((label, i) => {
+        g.append('text')
+          .attr('class', 'axis-label')
+          .attr('x', [colMetric, colTulsa, colAustin, colWinner][i])
+          .attr('y', headerHeight - 5)
+          .attr('font-weight', '700')
+          .text(label);
+      });
 
       g.append('line')
         .attr('x1', 0).attr('x2', innerW)
-        .attr('y1', tallyY - 10).attr('y2', tallyY - 10)
-        .attr('stroke', COLORS.text).attr('stroke-width', 1.5);
+        .attr('y1', headerHeight + 2).attr('y2', headerHeight + 2)
+        .attr('stroke', COLORS.border).attr('stroke-width', 1);
 
-      g.append('text')
-        .attr('x', colMetric)
-        .attr('y', tallyY + 14)
-        .attr('font-family', 'var(--font-sans)')
-        .attr('font-size', '13px')
-        .attr('font-weight', '800')
-        .attr('fill', COLORS.tulsa)
-        .attr('opacity', 0)
-        .transition().duration(600).delay(700)
-        .attr('opacity', 1)
-        .text(`Tulsa ${tulsaWins} — Austin ${austinWins}`);
+      const rows = comparison.length;
+
+      comparison.forEach((row, i) => {
+        const yPos = headerHeight + 10 + (i * rowHeight);
+
+        if (i > 0) {
+          g.append('line')
+            .attr('x1', 0).attr('x2', innerW)
+            .attr('y1', yPos - 6).attr('y2', yPos - 6)
+            .attr('stroke', COLORS.border).attr('stroke-width', 0.5);
+        }
+
+        g.append('text')
+          .attr('class', 'scorecard-metric')
+          .attr('x', colMetric)
+          .attr('y', yPos + 16)
+          .attr('font-size', '11px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('fill', COLORS.text)
+          .text(row.metric);
+
+        g.append('text')
+          .attr('class', 'scorecard-value')
+          .attr('x', colTulsa)
+          .attr('y', yPos + 16)
+          .attr('font-size', '12px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('font-weight', '600')
+          .attr('fill', row.winner === 'tulsa' ? COLORS.tulsa : COLORS.text)
+          .text(row.tulsa);
+
+        g.append('text')
+          .attr('class', 'scorecard-value')
+          .attr('x', colAustin)
+          .attr('y', yPos + 16)
+          .attr('font-size', '12px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('font-weight', '600')
+          .attr('fill', row.winner === 'austin' ? COLORS.austin : COLORS.text)
+          .text(row.austin);
+
+        const badgeColor = row.winner === 'tulsa' ? COLORS.tulsa : COLORS.austin;
+
+        g.append('rect')
+          .attr('x', colWinner)
+          .attr('y', yPos + 3)
+          .attr('width', 45)
+          .attr('height', 18)
+          .attr('rx', 9)
+          .attr('fill', badgeColor)
+          .attr('opacity', 0)
+          .transition().duration(400).delay(i * 80)
+          .attr('opacity', 1);
+
+        g.append('text')
+          .attr('class', 'winner-badge')
+          .attr('x', colWinner + 22.5)
+          .attr('y', yPos + 16)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '9px')
+          .attr('font-family', 'var(--font-sans)')
+          .attr('fill', 'white')
+          .attr('font-weight', '700')
+          .attr('opacity', 0)
+          .transition().duration(400).delay(i * 80)
+          .attr('opacity', 1)
+          .text(row.winner === 'tulsa' ? 'TULSA' : 'AUSTIN');
+      });
+
+      if (step === 'punchline-2' || step === 'punchline-3') {
+        const tulsaWins = comparison.filter(r => r.winner === 'tulsa').length;
+        const austinWins = comparison.filter(r => r.winner === 'austin').length;
+        const tallyY = headerHeight + 10 + (rows * rowHeight) + 20;
+
+        g.append('line')
+          .attr('x1', 0).attr('x2', innerW)
+          .attr('y1', tallyY - 10).attr('y2', tallyY - 10)
+          .attr('stroke', COLORS.text).attr('stroke-width', 1.5);
+
+        g.append('text')
+          .attr('x', colMetric)
+          .attr('y', tallyY + 14)
+          .attr('font-family', 'var(--font-sans)')
+          .attr('font-size', '13px')
+          .attr('font-weight', '800')
+          .attr('fill', COLORS.tulsa)
+          .attr('opacity', 0)
+          .transition().duration(600).delay(700)
+          .attr('opacity', 1)
+          .text(`Tulsa ${tulsaWins} — Austin ${austinWins}`);
+      }
     }
   }
 }
@@ -940,6 +1024,9 @@ function initScrollama() {
 
   const isMobile = window.innerWidth <= 900;
 
+  // Track last active step per section to handle scroll-back
+  const activeSteps = {};
+
   sections.forEach(section => {
     section.createChart();
 
@@ -947,18 +1034,40 @@ function initScrollama() {
     scroller
       .setup({
         step: `#${section.id} .step`,
-        // On mobile, trigger when step reaches the bottom of the sticky chart area
-        offset: isMobile ? 0.7 : 0.5,
+        offset: isMobile ? 0.65 : 0.5,
         debug: false,
       })
-      .onStepEnter(({ element }) => {
+      .onStepEnter(({ element, direction }) => {
         // Activate step
         const allSteps = document.querySelectorAll(`#${section.id} .step`);
         allSteps.forEach(s => s.classList.remove('is-active'));
         element.classList.add('is-active');
 
         const stepId = element.dataset.step;
+
+        // Always re-render chart on enter (handles scroll-back)
+        activeSteps[section.id] = stepId;
         section.updateChart(stepId);
+      })
+      .onStepExit(({ element, direction }) => {
+        // When scrolling back up past the first step of a section,
+        // re-render the first step's chart state
+        if (direction === 'up') {
+          const allSteps = Array.from(document.querySelectorAll(`#${section.id} .step`));
+          const exitIndex = allSteps.indexOf(element);
+          if (exitIndex === 0) {
+            // Scrolled above this section entirely — reset chart
+            element.classList.remove('is-active');
+          } else if (exitIndex > 0) {
+            // Scrolled back to previous step
+            const prevStep = allSteps[exitIndex - 1];
+            allSteps.forEach(s => s.classList.remove('is-active'));
+            prevStep.classList.add('is-active');
+            const prevStepId = prevStep.dataset.step;
+            activeSteps[section.id] = prevStepId;
+            section.updateChart(prevStepId);
+          }
+        }
       });
   });
 }
