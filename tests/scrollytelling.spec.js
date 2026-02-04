@@ -140,42 +140,43 @@ test.describe('Tulsa vs Austin — Scrollytelling', () => {
       return;
     }
 
-    // Check that no two data text elements on the same row have overlapping bounding boxes
-    // Exclude the chart title ("The Scorecard") since it's on its own line
-    const boxes = [];
-    for (let i = 0; i < count; i++) {
-      const el = textElements.nth(i);
-      const text = await el.textContent();
-      if (!text || text.trim().length === 0) continue;
-      // Skip the title — it's a header, not a data row
-      if (text.trim() === 'The Scorecard') continue;
+    // Check that text elements intended for the same visual row don't overlap
+    // We check via SVG y attributes (not rendered bounding boxes) since viewBox
+    // scaling compresses distances on mobile screens
+    const overlaps = await page.evaluate(() => {
+      const svg = document.querySelector('#chart-punchline svg');
+      if (!svg) return [];
+      const texts = Array.from(svg.querySelectorAll('text'));
+      const items = texts
+        .filter(t => t.textContent.trim().length > 0 && t.textContent.trim() !== 'The Scorecard')
+        .map(t => ({
+          text: t.textContent.trim(),
+          y: parseFloat(t.getAttribute('y') || '0'),
+          x: parseFloat(t.getAttribute('x') || '0'),
+          // Approximate width from text length
+          width: t.getBBox().width,
+        }));
 
-      const box = await el.boundingBox();
-      if (!box) continue;
-      boxes.push({ text: text.trim(), ...box });
-    }
-
-    // Check for horizontal overlap between elements on similar vertical positions (same "row")
-    // Use a generous row threshold since SVG viewBox scaling can compress y distances
-    for (let i = 0; i < boxes.length; i++) {
-      for (let j = i + 1; j < boxes.length; j++) {
-        const a = boxes[i];
-        const b = boxes[j];
-
-        // Same row = y positions within 3px of each other
-        const sameRow = Math.abs(a.y - b.y) < 3;
-        if (!sameRow) continue;
-
-        // Check horizontal overlap
-        const overlap = !(a.x + a.width < b.x || b.x + b.width < a.x);
-        if (overlap) {
-          const overlapAmount = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
-          expect(overlapAmount,
-            `Text "${a.text}" and "${b.text}" overlap by ${overlapAmount}px on mobile`
-          ).toBeLessThan(2);
+      const issues = [];
+      for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          const a = items[i];
+          const b = items[j];
+          // Same SVG y coordinate = same intended row
+          if (Math.abs(a.y - b.y) < 1) {
+            // Check horizontal overlap in SVG space
+            const overlapX = !(a.x + a.width < b.x || b.x + b.width < a.x);
+            if (overlapX) {
+              const amt = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
+              issues.push(`"${a.text}" and "${b.text}" overlap by ${amt.toFixed(1)}px (SVG coords)`);
+            }
+          }
         }
       }
-    }
+      return issues;
+    });
+
+    expect(overlaps, `Scorecard text overlaps found: ${overlaps.join('; ')}`).toEqual([]);
   });
 
   // ── Mobile: Steps Visible When Active ──────────────────────────
