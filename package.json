@@ -1,0 +1,17 @@
+{
+  "name": "tulsa-software-viz",
+  "version": "0.1.0",
+  "description": "NYT-quality data visualizations by Tulsa Software",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "scrollama": "^3.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
