@@ -761,20 +761,23 @@ function createPunchlineChart() {
   container.innerHTML = '';
 
   const { width, height, margin } = getChartDimensions(containerId);
+  const isMob = width < 500 || window.innerWidth <= 900;
+  // Mobile scorecard needs more vertical space
+  const adjustedHeight = isMob ? Math.max(height, 650) : height;
 
   const svg = d3.select(`#${containerId}`)
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', `0 0 ${width} ${adjustedHeight}`)
     .attr('preserveAspectRatio', 'xMidYMid meet');
 
-  window._punchlineChart = { svg, width, height, margin };
+  window._punchlineChart = { svg, width, height: adjustedHeight, margin };
 }
 
 function updatePunchlineChart(step) {
   const chart = window._punchlineChart;
   if (!chart) return;
   const { svg, width, height, margin } = chart;
-  const isMobile = width < 500;
+  const isMobile = width < 500 || window.innerWidth <= 900;
 
   const comparison = data.sections.punchline.data.summaryComparison;
 
@@ -790,25 +793,26 @@ function updatePunchlineChart(step) {
 
     if (isMobile) {
       // Mobile: stacked card layout instead of table
-      const rowHeight = 52;
+      const rowHeight = 68;
 
       g.append('text')
         .attr('class', 'chart-title')
         .attr('x', 0)
-        .attr('y', -20)
+        .attr('y', -30)
         .attr('font-size', '14px')
         .text('The Scorecard');
 
+      const startY = 5;
       comparison.forEach((row, i) => {
-        const yPos = i * rowHeight;
+        const yPos = startY + (i * rowHeight);
         const badgeColor = row.winner === 'tulsa' ? COLORS.tulsa : COLORS.austin;
 
         // Winner badge (left side)
         g.append('rect')
           .attr('x', 0)
-          .attr('y', yPos + 2)
+          .attr('y', yPos)
           .attr('width', 4)
-          .attr('height', rowHeight - 10)
+          .attr('height', rowHeight - 14)
           .attr('rx', 2)
           .attr('fill', badgeColor)
           .attr('opacity', 0)
@@ -817,18 +821,18 @@ function updatePunchlineChart(step) {
 
         // Metric name
         g.append('text')
-          .attr('x', 12)
-          .attr('y', yPos + 16)
+          .attr('x', 14)
+          .attr('y', yPos + 18)
           .attr('font-size', '10px')
           .attr('font-family', 'var(--font-sans)')
           .attr('font-weight', '600')
           .attr('fill', COLORS.text)
           .text(row.metric);
 
-        // Values on same line below metric
+        // Values on same line, well below metric
         g.append('text')
-          .attr('x', 12)
-          .attr('y', yPos + 34)
+          .attr('x', 14)
+          .attr('y', yPos + 42)
           .attr('font-size', '11px')
           .attr('font-family', 'var(--font-sans)')
           .attr('fill', COLORS.tulsa)
@@ -837,7 +841,7 @@ function updatePunchlineChart(step) {
 
         g.append('text')
           .attr('x', innerW * 0.5)
-          .attr('y', yPos + 34)
+          .attr('y', yPos + 42)
           .attr('font-size', '11px')
           .attr('font-family', 'var(--font-sans)')
           .attr('fill', COLORS.austin)
@@ -857,7 +861,7 @@ function updatePunchlineChart(step) {
       if (step === 'punchline-2' || step === 'punchline-3') {
         const tulsaWins = comparison.filter(r => r.winner === 'tulsa').length;
         const austinWins = comparison.filter(r => r.winner === 'austin').length;
-        const tallyY = comparison.length * rowHeight + 10;
+        const tallyY = startY + (comparison.length * rowHeight) + 10;
 
         g.append('line')
           .attr('x1', 0).attr('x2', innerW)

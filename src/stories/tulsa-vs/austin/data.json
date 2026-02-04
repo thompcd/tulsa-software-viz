@@ -9,7 +9,7 @@
   "sections": {
     "salaryIllusion": {
       "title": "The Illusion of the Big Salary",
-      "description": "Austin offers higher nominal salaries, but cost of living eats the difference — and then some.",
+      "description": "Austin offers higher nominal salaries, but cost of living eats the difference \u2014 and then some.",
       "data": {
         "austinSoftwareDeveloperSalary": {
           "value": 139390,
@@ -22,14 +22,14 @@
           "label": "Tulsa Computer & Mathematical Mean Salary",
           "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
           "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
-          "note": "Mean hourly $45.52 × 2,080 hours"
+          "note": "Mean hourly $45.52 \u00d7 2,080 hours"
         },
         "austinComputerMathMeanSalary": {
           "value": 116820,
           "label": "Austin Computer & Mathematical Mean Salary",
           "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
           "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm",
-          "note": "Mean hourly $56.16 × 2,080 hours"
+          "note": "Mean hourly $56.16 \u00d7 2,080 hours"
         },
         "costOfLivingDifference": {
           "value": 57.0,
@@ -55,14 +55,14 @@
           "label": "Austin Mean Wage All Occupations",
           "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
           "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm",
-          "note": "Mean hourly $34.32 × 2,080 hours"
+          "note": "Mean hourly $34.32 \u00d7 2,080 hours"
         },
         "tulsaMeanAllOccupations": {
           "value": 57242,
           "label": "Tulsa Mean Wage All Occupations",
           "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
           "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
-          "note": "Mean hourly $27.52 × 2,080 hours"
+          "note": "Mean hourly $27.52 \u00d7 2,080 hours"
         }
       }
     },
@@ -116,7 +116,7 @@
         },
         "housingPriceRatio": {
           "value": 3.22,
-          "label": "Austin homes cost 3.22× more than Tulsa homes",
+          "label": "Austin homes cost 3.22\u00d7 more than Tulsa homes",
           "note": "$577,400 / $179,100"
         },
         "nationalMedianHome": {
@@ -128,7 +128,7 @@
       }
     },
     "tulsaGrowth": {
-      "title": "Tulsa Isn't Just Cheap — It's Building",
+      "title": "Tulsa Isn't Just Cheap \u2014 It's Building",
       "description": "Tulsa is an affordable city with a growing tech and industrial economy.",
       "data": {
         "tulsaPopulation": {
@@ -246,7 +246,7 @@
           "label": "Tulsa Petroleum Operators Location Quotient",
           "source": "U.S. Bureau of Labor Statistics, OEWS, May 2024",
           "sourceUrl": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
-          "note": "5.62× the national rate"
+          "note": "5.62\u00d7 the national rate"
         },
         "installationRepairWage": {
           "tulsaHourly": 30.28,
@@ -263,7 +263,7 @@
       "data": {
         "summaryComparison": [
           {
-            "metric": "Software Developer Salary",
+            "metric": "Nominal Salary",
             "austin": "$139,390",
             "tulsa": "$94,682",
             "austinValue": 139390,
@@ -272,7 +272,7 @@
             "winner": "austin"
           },
           {
-            "metric": "Purchasing Power (COL-adjusted)",
+            "metric": "COL-Adjusted Salary",
             "austin": "$88,761",
             "tulsa": "$94,682",
             "austinValue": 88761,
@@ -281,7 +281,7 @@
             "winner": "tulsa"
           },
           {
-            "metric": "Median Home Price",
+            "metric": "Home Price",
             "austin": "$577,400",
             "tulsa": "$179,100",
             "austinValue": 577400,
@@ -289,7 +289,7 @@
             "winner": "tulsa"
           },
           {
-            "metric": "2-Bedroom Rent",
+            "metric": "2BR Rent",
             "austin": "$1,720/mo",
             "tulsa": "$1,020/mo",
             "austinValue": 1720,
@@ -297,7 +297,7 @@
             "winner": "tulsa"
           },
           {
-            "metric": "Unemployment Rate",
+            "metric": "Unemployment",
             "austin": "5.1%",
             "tulsa": "4.7%",
             "austinValue": 5.1,
@@ -305,7 +305,7 @@
             "winner": "tulsa"
           },
           {
-            "metric": "Homeownership Rate",
+            "metric": "Homeownership",
             "austin": "44.4%",
             "tulsa": "52.0%",
             "austinValue": 44.4,
@@ -313,7 +313,7 @@
             "winner": "tulsa"
           },
           {
-            "metric": "Average Commute",
+            "metric": "Avg Commute",
             "austin": "24 min",
             "tulsa": "18.7 min",
             "austinValue": 24,
@@ -321,7 +321,7 @@
             "winner": "tulsa"
           },
           {
-            "metric": "10-Year Job Growth Forecast",
+            "metric": "Job Growth (10yr)",
             "austin": "47.0%",
             "tulsa": "29.5%",
             "austinValue": 47.0,
@@ -334,57 +334,57 @@
   },
   "sources": [
     {
-      "name": "U.S. Bureau of Labor Statistics — Austin OEWS May 2024",
+      "name": "U.S. Bureau of Labor Statistics \u2014 Austin OEWS May 2024",
       "url": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_austin.htm",
       "accessed": "2026-02-03"
     },
     {
-      "name": "U.S. Bureau of Labor Statistics — Tulsa OEWS May 2024",
+      "name": "U.S. Bureau of Labor Statistics \u2014 Tulsa OEWS May 2024",
       "url": "https://www.bls.gov/regions/southwest/news-release/occupationalemploymentandwages_tulsa.htm",
       "accessed": "2026-02-03"
     },
     {
-      "name": "BestPlaces.net — Austin, TX Cost of Living",
+      "name": "BestPlaces.net \u2014 Austin, TX Cost of Living",
       "url": "https://www.bestplaces.net/cost_of_living/city/texas/austin",
       "accessed": "2026-02-03"
     },
     {
-      "name": "BestPlaces.net — Tulsa, OK Cost of Living",
+      "name": "BestPlaces.net \u2014 Tulsa, OK Cost of Living",
       "url": "https://www.bestplaces.net/cost_of_living/city/oklahoma/tulsa",
       "accessed": "2026-02-03"
     },
     {
-      "name": "BestPlaces.net — Cost of Living Calculator: Tulsa vs Austin",
+      "name": "BestPlaces.net \u2014 Cost of Living Calculator: Tulsa vs Austin",
       "url": "https://www.bestplaces.net/cost-of-living/tulsa-ok/austin-tx/100000",
       "accessed": "2026-02-03"
     },
     {
-      "name": "BestPlaces.net — Compare Cities: Tulsa vs Austin Cost of Living",
+      "name": "BestPlaces.net \u2014 Compare Cities: Tulsa vs Austin Cost of Living",
       "url": "https://www.bestplaces.net/compare-cities/tulsa-ok/austin-tx/costofliving",
       "accessed": "2026-02-03"
     },
     {
-      "name": "BestPlaces.net — Tulsa Economy",
+      "name": "BestPlaces.net \u2014 Tulsa Economy",
       "url": "https://www.bestplaces.net/economy/city/oklahoma/tulsa",
       "accessed": "2026-02-03"
     },
     {
-      "name": "BestPlaces.net — Austin Economy",
+      "name": "BestPlaces.net \u2014 Austin Economy",
       "url": "https://www.bestplaces.net/economy/city/texas/austin",
       "accessed": "2026-02-03"
     },
     {
-      "name": "U.S. Census Bureau ACS 2023 — Tulsa, OK (via DataUSA)",
+      "name": "U.S. Census Bureau ACS 2023 \u2014 Tulsa, OK (via DataUSA)",
       "url": "https://datausa.io/profile/geo/tulsa-ok",
       "accessed": "2026-02-03"
     },
     {
-      "name": "U.S. Census Bureau ACS 2023 — Austin, TX (via DataUSA)",
+      "name": "U.S. Census Bureau ACS 2023 \u2014 Austin, TX (via DataUSA)",
       "url": "https://datausa.io/profile/geo/austin-tx",
       "accessed": "2026-02-03"
     },
     {
-      "name": "Tulsa's Future — Tulsa Regional Chamber Economic Development",
+      "name": "Tulsa's Future \u2014 Tulsa Regional Chamber Economic Development",
       "url": "https://tulsasfuture.com",
       "accessed": "2026-02-03"
     },
