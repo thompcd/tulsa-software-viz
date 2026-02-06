@@ -6,7 +6,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        tulsaVsAustin: resolve(__dirname, 'src/stories/tulsa-vs/austin/index.html'),
+        tulsaVsAustin: resolve(__dirname, 'src/stories/head-to-head/tulsa-vs-austin/index.html'),
       },
     },
   },
