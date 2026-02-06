@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const STORY_PATH = '/src/stories/tulsa-vs/austin/';
+const STORY_PATH = '/src/stories/head-to-head/tulsa-vs-austin/';
 
 test.describe('Tulsa vs Austin — Scrollytelling', () => {
 
