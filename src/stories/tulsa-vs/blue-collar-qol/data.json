@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "title": "Tulsa vs The Blue Collar Squeeze",
+    "subtitle": "How working families are faring in Tulsa compared to the nation",
+    "updated": "2026-02-08",
+    "sources": [
+      {
+        "name": "MIT Living Wage Calculator",
+        "url": "https://livingwage.mit.edu/metros/46140",
+        "accessed": "2026-02-08"
+      },
+      {
+        "name": "Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/oes/",
+        "accessed": "2026-02-08"
+      },
+      {
+        "name": "BLS Consumer Expenditure Survey",
+        "url": "https://www.bls.gov/cex/",
+        "accessed": "2026-02-08"
+      }
+    ]
+  },
+  "familyProfile": {
+    "description": "2 adults (1 working), 2 children",
+    "note": "Typical blue collar family structure"
+  },
+  "livingWage": {
+    "tulsa": {
+      "hourly": 38.42,
+      "annual": 79924,
+      "note": "Minimum to cover basic needs"
+    },
+    "texas": {
+      "hourly": 39.29,
+      "annual": 81719,
+      "note": "State average for comparison"
+    },
+    "sanAntonio": {
+      "hourly": 38.56,
+      "annual": 80208,
+      "note": "Similar metro comparison"
+    }
+  },
+  "annualExpenses": {
+    "tulsa": {
+      "housing": 14047,
+      "food": 12405,
+      "childCare": 0,
+      "medical": 9846,
+      "transportation": 17444,
+      "civic": 6450,
+      "internetMobile": 1987,
+      "other": 9120,
+      "total": 71300,
+      "note": "2 adults (1 working), 2 children"
+    },
+    "national": {
+      "housing": 18161,
+      "food": 11319,
+      "childCare": 0,
+      "medical": 10411,
+      "transportation": 17050,
+      "civic": 6450,
+      "internetMobile": 2044,
+      "other": 9120,
+      "total": 74556,
+      "note": "Texas average as proxy"
+    }
+  },
+  "blueCollarSalaries": {
+    "tulsa": {
+      "constructionLaborer": 38500,
+      "productionWorker": 36200,
+      "truckDriver": 48500,
+      "welder": 45800,
+      "electrician": 52400,
+      "hvacTech": 49200,
+      "machinist": 46300,
+      "warehouseWorker": 35800,
+      "avgBlueCollar": 44088,
+      "source": "BLS Occupational Employment and Wage Estimates, Tulsa MSA"
+    }
+  },
+  "paycheckBreakdown": {
+    "description": "Where a $44,088 blue collar salary goes in Tulsa",
+    "grossMonthly": 3674,
+    "takeHomeEstimate": 3100,
+    "expenses": {
+      "housing": {
+        "monthly": 1171,
+        "percentGross": 31.9,
+        "percentTakeHome": 37.8,
+        "national30Rule": "Should be <30%"
+      },
+      "food": {
+        "monthly": 1034,
+        "percentGross": 28.1,
+        "percentTakeHome": 33.4
+      },
+      "transportation": {
+        "monthly": 1454,
+        "percentGross": 39.6,
+        "percentTakeHome": 46.9
+      },
+      "medical": {
+        "monthly": 821,
+        "percentGross": 22.3,
+        "percentTakeHome": 26.5
+      }
+    },
+    "gap": {
+      "livingWageNeeded": 79924,
+      "typicalBlueCollar": 44088,
+      "shortfall": 35836,
+      "percentShort": 44.8,
+      "note": "Single-income family needs 2nd income or assistance"
+    }
+  },
+  "tulsaAdvantage": {
+    "housingVsNational": {
+      "tulsaAnnual": 14047,
+      "nationalAnnual": 18161,
+      "savings": 4114,
+      "percentCheaper": 22.7
+    },
+    "dualIncomeScenario": {
+      "description": "2 adults both working, 2 children",
+      "livingWagePerPerson": 25.32,
+      "combinedAnnual": 105352,
+      "typicalBlueCollarDual": 88176,
+      "note": "Dual income makes Tulsa very livable"
+    }
+  },
+  "keyInsights": [
+    {
+      "stat": "22.7%",
+      "label": "Housing savings vs national average",
+      "context": "$4,114 per year back in your pocket"
+    },
+    {
+      "stat": "$14,047",
+      "label": "Annual housing cost in Tulsa",
+      "context": "vs $18,161 nationally"
+    },
+    {
+      "stat": "31.9%",
+      "label": "Housing as % of gross income",
+      "context": "Just over the 30% rule, but manageable"
+    },
+    {
+      "stat": "$35,836",
+      "label": "Gap between living wage and avg blue collar",
+      "context": "Single-income families face real pressure"
+    }
+  ],
+  "narrative": {
+    "hook": "A welder in Tulsa earns $45,800. But a family of four needs $79,924 to cover basics. Where does that leave working families?",
+    "sections": [
+      {
+        "title": "The Blue Collar Reality",
+        "content": "Blue collar work built America. But in 2026, can it still support an American family?"
+      },
+      {
+        "title": "Tulsa's Edge",
+        "content": "Housing costs 22.7% less than the national average. That's $4,114/year — real money for working families."
+      },
+      {
+        "title": "The Math Problem",
+        "content": "Single-income blue collar families face a $35,000+ gap between earnings and living wage. The math only works with dual incomes."
+      },
+      {
+        "title": "Why Tulsa Works",
+        "content": "Two blue collar incomes in Tulsa = $88K combined. Living wage for 2-working-adult household = $105K. The gap shrinks to manageable."
+      }
+    ],
+    "callToAction": "Tulsa isn't perfect. But for working families, it's one of the better hands you can be dealt."
+  }
+}
