@@ -26,15 +26,12 @@ const fmt = {
   comma: d3.format(','),
 };
 
-// Salary data
+// Salary data - reduced to 5 for legibility
 const salaries = [
   { job: 'Electrician', pay: 52400 },
   { job: 'HVAC Tech', pay: 49200 },
-  { job: 'Truck Driver', pay: 48500 },
-  { job: 'Machinist', pay: 46300 },
   { job: 'Welder', pay: 45800 },
   { job: 'Construction', pay: 38500 },
-  { job: 'Production', pay: 36200 },
   { job: 'Warehouse', pay: 35800 },
 ];
 
@@ -110,11 +107,11 @@ function createSalaryChart() {
     .attr('y', 42)
     .text('Annual wages by occupation, BLS 2024');
 
-  // Scales
+  // Scales - increased padding for legibility
   const y = d3.scaleBand()
     .domain(salaries.map(d => d.job))
     .range([0, innerH])
-    .padding(0.25);
+    .padding(0.35);
 
   const x = d3.scaleLinear()
     .domain([0, 60000])

@@ -339,7 +339,7 @@ body {
 
 .bar-label {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   fill: var(--color-text-light);
 }
