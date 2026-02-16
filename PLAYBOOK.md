@@ -150,8 +150,27 @@ npm test
 1. **Create PR** → Netlify auto-builds deploy preview
 2. **Corey reviews on phone** — mobile experience is the priority
 3. **Fix feedback** → push to same branch
-4. **Merge** → auto-deploys to `tulsasoftwareviz.netlify.app`
-5. **Add card to developer portfolio** (DataProjects.razor + thumbnail SVG)
+4. **Add card to site index** (`index.html`) — see format below
+5. **Merge** → auto-deploys to `tulsasoftwareviz.netlify.app`
+6. **Add card to developer portfolio** (DataProjects.razor + thumbnail SVG)
+
+### Index Card Format
+
+Add a card to `index.html` for each new article:
+
+```html
+<a href="/src/stories/head-to-head/tulsa-vs-[topic]/">
+  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:#c23616;font-weight:600;">Tulsa Versus</span>
+  <h2 style="font-size:1.4rem;margin:0.3rem 0;">[Title]</h2>
+  <p style="color:#666;font-size:0.95rem;">[One-line description]</p>
+  <span style="font-size:0.75rem;color:#999;">[Month Year] · [X] min read</span>
+</a>
+```
+
+**Rules:**
+- Series label is always "Tulsa Versus" (no episode numbers)
+- Newest articles go at the top
+- Keep descriptions under 150 characters
 
 ---
 
