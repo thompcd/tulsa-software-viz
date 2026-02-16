@@ -172,6 +172,20 @@ Add a card to `index.html` for each new article:
 - Newest articles go at the top
 - Keep descriptions under 150 characters
 
+### Vite Config Entry
+
+Add the new story to `vite.config.js` so it gets built:
+
+```js
+rollupOptions: {
+  input: {
+    main: resolve(__dirname, 'index.html'),
+    tulsaVsAustin: resolve(__dirname, 'src/stories/head-to-head/tulsa-vs-austin/index.html'),
+    tulsaVsNewTopic: resolve(__dirname, 'src/stories/head-to-head/tulsa-vs-[topic]/index.html'),
+  },
+},
+```
+
 ---
 
 ## Phase 7: LinkedIn Post (Friday)

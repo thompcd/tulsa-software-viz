@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         tulsaVsAustin: resolve(__dirname, 'src/stories/head-to-head/tulsa-vs-austin/index.html'),
+        tulsaVsInflation: resolve(__dirname, 'src/stories/head-to-head/tulsa-vs-inflation/index.html'),
       },
     },
   },
