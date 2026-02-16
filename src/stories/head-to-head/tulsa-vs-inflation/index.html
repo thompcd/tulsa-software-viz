@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tulsa vs Inflation | Your Dollar Stretches Further</title>
+    <meta name="description" content="Interactive data visualization comparing Tulsa's cost of living against Austin, Denver, and Nashville. See how much further your dollar goes.">
+    <meta property="og:title" content="Tulsa vs Inflation">
+    <meta property="og:description" content="Your dollar stretches further in Tulsa — but by how much?">
+    <meta property="og:type" content="website">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@500;600;700&family=Lato:wght@300;400;700&family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Design System Colors */
+            --primary-gradient: linear-gradient(145deg, #50bff5 10%, rgb(49, 245, 227) 100%);
+            --primary-dark: #0ab0d5;
+            --cyan-light: #50bff5;
+            --turquoise: rgb(49, 245, 227);
+            
+            /* Metro Colors */
+            --tulsa: #50bff5;
+            --austin: #ff6b35;
+            --denver: #8b5cf6;
+            --nashville: #f472b6;
+            --national: #6b7280;
+            
+            /* Backgrounds */
+            --bg: #ffffff;
+            --bg-section: #f8fafc;
+            --bg-dark: #0f172a;
+            
+            /* Text */
+            --text-primary: #000000;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --text-inverse: #ffffff;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 60px 24px;
+            background: var(--bg);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(80, 191, 245, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            max-width: 600px;
+        }
+
+        .hero-stat {
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero-stat-item {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--text-muted);
+        }
+
+        /* Scrolly Sections */
+        .scrolly-section {
+            padding: 100px 24px;
+            position: relative;
+        }
+
+        .scrolly-section.alt-bg {
+            background: var(--bg-section);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Insight Cards */
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 64px;
+        }
+
+        .insight-card {
+            background: var(--bg);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(80, 191, 245, 0.1);
+        }
+
+        .insight-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(145deg, rgba(80, 191, 245, 0.1) 10%, rgba(49, 245, 227, 0.1) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .insight-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .insight-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .insight-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Calculator Section */
+        .calculator {
+            background: var(--bg);
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 800px;
+            margin: 48px auto 0;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .calculator-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .calculator-input-group {
+            margin-bottom: 32px;
+        }
+
+        .calculator-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .calculator-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: var(--bg-section);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            color: var(--text-primary);
+            text-align: center;
+            transition: border-color 0.2s ease-out;
+        }
+
+        .calculator-input:focus {
+            outline: none;
+            border-color: var(--cyan-light);
+        }
+
+        .calculator-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .calc-result-card {
+            background: var(--bg-section);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .calc-result-city {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .calc-result-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .calc-result-diff {
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .calc-result-diff.positive {
+            color: var(--primary-dark);
+        }
+
+        .calc-result-diff.negative {
+            color: #ef4444;
+        }
+
+        /* Cost Comparison Bars */
+        .cost-bars {
+            max-width: 700px;
+            margin: 48px auto 0;
+        }
+
+        .cost-bar-group {
+            margin-bottom: 32px;
+        }
+
+        .cost-bar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .cost-bar-city {
+            font-weight: 600;
+        }
+
+        .cost-bar-value {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .cost-bar-track {
+            height: 48px;
+            background: var(--bg-section);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cost-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            padding-left: 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 100px 24px;
+            text-align: center;
+            background: var(--bg-dark);
+            color: var(--text-inverse);
+        }
+
+        .footer-cta {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .footer-cta .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-body {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 48px;
+        }
+
+        .footer-meta {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-meta a {
+            color: var(--cyan-light);
+            text-decoration: none;
+            transition: color 0.2s ease-out;
+        }
+
+        .footer-meta a:hover {
+            color: var(--turquoise);
+        }
+
+        /* Back Link */
+        .back-link {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            background: var(--bg);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease-out;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .back-link:hover {
+            border-color: var(--cyan-light);
+            color: var(--primary-dark);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-stat {
+                gap: 32px;
+            }
+
+            .calculator {
+                padding: 32px 24px;
+            }
+
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .legend {
+                gap: 12px;
+            }
+
+            .back-link {
+                top: 16px;
+                left: 16px;
+                padding: 10px 16px;
+            }
+
+            .scrolly-section {
+                padding: 80px 24px;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: var(--bg-dark);
+            color: var(--text-inverse);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .tooltip.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Link -->
+    <a href="/data-projects" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        All Projects
+    </a>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-tag">Data Visualization</div>
+        <h1>
+            Your Dollar Stretches<br>
+            <span class="gradient-text">Further in Tulsa</span>
+        </h1>
+        <p class="hero-subtitle">Comparing cost of living against Austin, Denver, and Nashville over the past 5 years. Let's see the numbers.</p>
+        <div class="hero-stat">
+            <div class="hero-stat-item">
+                <div class="hero-stat-value" id="hero-savings">$18,675</div>
+                <div class="hero-stat-label">Annual savings vs Denver</div>
+            </div>
+            <div class="hero-stat-item">
+                <div class="hero-stat-value">10.6%</div>
+                <div class="hero-stat-label">Lower cost of living</div>
+            </div>
+            <div class="hero-stat-item">
+                <div class="hero-stat-value">25%</div>
+                <div class="hero-stat-label">Lower rent costs</div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Section 1: Housing -->
+    <section class="scrolly-section" id="housing">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">01 — HOUSING</div>
+                <h2 class="section-title">The Biggest Difference</h2>
+                <p class="section-subtitle">Home values in peer cities skyrocketed during the pandemic boom. Tulsa stayed grounded with steady, sustainable growth.</p>
+            </div>
+            
+            <div class="chart-container fade-in">
+                <svg id="housing-chart" class="chart-svg" viewBox="0 0 900 450"></svg>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--tulsa)"></div>
+                        <span>Tulsa</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--austin)"></div>
+                        <span>Austin</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--denver)"></div>
+                        <span>Denver</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--nashville)"></div>
+                        <span>Nashville</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-grid">
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">🏠</div>
+                    <div class="insight-value">$255K</div>
+                    <div class="insight-label">Median Tulsa Home</div>
+                    <div class="insight-desc">Compared to $521K in Austin, $598K in Denver, and $459K in Nashville</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">📈</div>
+                    <div class="insight-value">63%</div>
+                    <div class="insight-label">5-Year Growth</div>
+                    <div class="insight-desc">Steady appreciation without the volatile boom-bust cycle of tech hubs</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">💰</div>
+                    <div class="insight-value">$343K</div>
+                    <div class="insight-label">Savings on Home</div>
+                    <div class="insight-desc">Compared to buying the equivalent home in Denver</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Gas Prices -->
+    <section class="scrolly-section alt-bg" id="gas">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">02 — ENERGY</div>
+                <h2 class="section-title">Oklahoma Stays Cheap</h2>
+                <p class="section-subtitle">Being an oil & gas state has its perks. Oklahoma consistently has the lowest gas prices in the nation.</p>
+            </div>
+            
+            <div class="chart-container fade-in">
+                <svg id="gas-chart" class="chart-svg" viewBox="0 0 900 400"></svg>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--tulsa)"></div>
+                        <span>Oklahoma</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--austin)"></div>
+                        <span>Texas</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--denver)"></div>
+                        <span>Colorado</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--national)"></div>
+                        <span>National Avg</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-grid">
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">⛽</div>
+                    <div class="insight-value">$2.30</div>
+                    <div class="insight-label">Current OK Price</div>
+                    <div class="insight-desc">63¢ below the national average of $2.93</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">🚗</div>
+                    <div class="insight-value">$650+</div>
+                    <div class="insight-label">Annual Savings</div>
+                    <div class="insight-desc">For a typical driver (15,000 miles/year) vs Colorado</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Overall Cost -->
+    <section class="scrolly-section" id="cost">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">03 — COST INDEX</div>
+                <h2 class="section-title">Regional Price Parities</h2>
+                <p class="section-subtitle">100 = national average. Lower is better for your wallet.</p>
+            </div>
+
+            <div class="cost-bars fade-in">
+                <div class="cost-bar-group">
+                    <div class="cost-bar-header">
+                        <span class="cost-bar-city">Tulsa</span>
+                        <span class="cost-bar-value">89.4</span>
+                    </div>
+                    <div class="cost-bar-track">
+                        <div class="cost-bar-fill" style="width: 0; background: var(--tulsa);" data-width="89.4">10.6% below average</div>
+                    </div>
+                </div>
+                <div class="cost-bar-group">
+                    <div class="cost-bar-header">
+                        <span class="cost-bar-city">Nashville</span>
+                        <span class="cost-bar-value">97.6</span>
+                    </div>
+                    <div class="cost-bar-track">
+                        <div class="cost-bar-fill" style="width: 0; background: var(--nashville);" data-width="97.6"></div>
+                    </div>
+                </div>
+                <div class="cost-bar-group">
+                    <div class="cost-bar-header">
+                        <span class="cost-bar-city">National Average</span>
+                        <span class="cost-bar-value">100.0</span>
+                    </div>
+                    <div class="cost-bar-track">
+                        <div class="cost-bar-fill" style="width: 0; background: var(--national);" data-width="100"></div>
+                    </div>
+                </div>
+                <div class="cost-bar-group">
+                    <div class="cost-bar-header">
+                        <span class="cost-bar-city">Austin</span>
+                        <span class="cost-bar-value">101.8</span>
+                    </div>
+                    <div class="cost-bar-track">
+                        <div class="cost-bar-fill" style="width: 0; background: var(--austin);" data-width="101.8"></div>
+                    </div>
+                </div>
+                <div class="cost-bar-group">
+                    <div class="cost-bar-header">
+                        <span class="cost-bar-city">Denver</span>
+                        <span class="cost-bar-value">107.3</span>
+                    </div>
+                    <div class="cost-bar-track">
+                        <div class="cost-bar-fill" style="width: 0; background: var(--denver);" data-width="107.3">7.3% above average</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Purchasing Power Calculator -->
+    <section class="scrolly-section alt-bg" id="calculator">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">04 — CALCULATOR</div>
+                <h2 class="section-title">What's Your Salary Really Worth?</h2>
+                <p class="section-subtitle">Enter your salary to see its real purchasing power across cities</p>
+            </div>
+
+            <div class="calculator fade-in">
+                <div class="calculator-input-group">
+                    <label class="calculator-label">Enter your annual salary ($)</label>
+                    <input type="text" id="salary-input" class="calculator-input" value="100,000" placeholder="100,000">
+                </div>
+                <div class="calculator-results" id="calc-results">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: What $100 Buys -->
+    <section class="scrolly-section" id="basket">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">05 — PURCHASING POWER</div>
+                <h2 class="section-title">What $100 Buys You</h2>
+                <p class="section-subtitle">The same basket of goods and services costs different amounts in each city</p>
+            </div>
+
+            <div class="chart-container fade-in">
+                <svg id="basket-chart" class="chart-svg" viewBox="0 0 900 400"></svg>
+            </div>
+
+            <div class="insight-grid">
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">🛒</div>
+                    <div class="insight-value">$100</div>
+                    <div class="insight-label">Tulsa Baseline</div>
+                    <div class="insight-desc">Your purchasing power benchmark</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">📉</div>
+                    <div class="insight-value">$83</div>
+                    <div class="insight-label">Denver Equivalent</div>
+                    <div class="insight-desc">You'd need $120 in Denver to match Tulsa's $100</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">💡</div>
+                    <div class="insight-value">17%</div>
+                    <div class="insight-label">More Bang for Buck</div>
+                    <div class="insight-desc">Your dollar works harder in Tulsa</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h2 class="footer-cta">Ready to make your <span class="gradient-text">money work harder?</span></h2>
+            <p class="footer-body">
+                Tulsa offers big-city amenities with small-city costs. Whether you're remote-first or building locally, the math works.
+            </p>
+            <div class="footer-meta">
+                <p>Data sources: <a href="https://www.bea.gov" target="_blank">Bureau of Economic Analysis</a>, 
+                <a href="https://www.bls.gov" target="_blank">Bureau of Labor Statistics</a>, 
+                <a href="https://www.zillow.com/research/data/" target="_blank">Zillow Research</a></p>
+                <p style="margin-top: 12px;">Last updated: February 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Data
+        const housingData = {
+            dates: ['2019-01', '2020-01', '2021-01', '2022-01', '2023-01', '2024-01', '2025-01'],
+            Tulsa: [147289, 156901, 175112, 214892, 234218, 244521, 255892],
+            Austin: [318234, 342891, 412893, 568234, 569234, 531892, 521234],
+            Denver: [412893, 442318, 512893, 628912, 638912, 612893, 598234],
+            Nashville: [289234, 312893, 378912, 478912, 488912, 472134, 458912]
+        };
+
+        const gasData = {
+            dates: ['2020-01', '2020-06', '2021-06', '2022-06', '2023-06', '2024-06', '2026-02'],
+            Oklahoma: [2.31, 1.78, 2.82, 4.42, 2.89, 2.98, 2.30],
+            Texas: [2.28, 1.82, 2.78, 4.52, 2.95, 3.05, 2.52],
+            Colorado: [2.48, 2.12, 3.18, 4.98, 3.28, 3.38, 2.75],
+            National: [2.58, 2.18, 3.12, 4.92, 3.58, 3.52, 2.93]
+        };
+
+        const purchasingPower = {
+            Tulsa: { multiplier: 1.1187, rpp: 89.4 },
+            Austin: { multiplier: 0.9823, rpp: 101.8 },
+            Denver: { multiplier: 0.9320, rpp: 107.3 },
+            Nashville: { multiplier: 1.0246, rpp: 97.6 }
+        };
+
+        const basketData = {
+            categories: ['Groceries', 'Gas', 'Rent', 'Utilities', 'Dining'],
+            Tulsa: [100, 78, 100, 95, 100],
+            Austin: [92, 91, 66, 98, 91],
+            Denver: [89, 84, 58, 92, 85],
+            Nashville: [95, 91, 73, 97, 93]
+        };
+
+        // Colors matching CSS variables
+        const colors = {
+            Tulsa: '#50bff5',
+            Oklahoma: '#50bff5',
+            Austin: '#ff6b35',
+            Texas: '#ff6b35',
+            Denver: '#8b5cf6',
+            Colorado: '#8b5cf6',
+            Nashville: '#f472b6',
+            National: '#6b7280'
+        };
+
+        // Housing Chart
+        function drawHousingChart() {
+            const svg = d3.select('#housing-chart');
+            const margin = { top: 40, right: 100, bottom: 50, left: 80 };
+            const width = 900 - margin.left - margin.right;
+            const height = 450 - margin.top - margin.bottom;
+
+            svg.selectAll('*').remove();
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const x = d3.scalePoint()
+                .domain(housingData.dates)
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+                .domain([100000, 700000])
+                .range([height, 0]);
+
+            // Grid
+            g.append('g')
+                .attr('class', 'grid')
+                .call(d3.axisLeft(y)
+                    .tickSize(-width)
+                    .tickFormat('')
+                )
+                .selectAll('line')
+                .attr('stroke', '#e5e7eb');
+
+            g.selectAll('.domain').remove();
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x).tickFormat(d => d.split('-')[0]))
+                .selectAll('text')
+                .attr('fill', '#6b7280')
+                .attr('font-family', 'Lato');
+
+            g.append('g')
+                .call(d3.axisLeft(y).tickFormat(d => `$${d/1000}k`))
+                .selectAll('text')
+                .attr('fill', '#6b7280')
+                .attr('font-family', 'Lato');
+
+            // Lines
+            const line = d3.line()
+                .x((d, i) => x(housingData.dates[i]))
+                .y(d => y(d))
+                .curve(d3.curveMonotoneX);
+
+            ['Tulsa', 'Austin', 'Denver', 'Nashville'].forEach(city => {
+                const path = g.append('path')
+                    .datum(housingData[city])
+                    .attr('fill', 'none')
+                    .attr('stroke', colors[city])
+                    .attr('stroke-width', city === 'Tulsa' ? 4 : 2.5)
+                    .attr('d', line);
+
+                // Animate
+                const totalLength = path.node().getTotalLength();
+                path
+                    .attr('stroke-dasharray', totalLength)
+                    .attr('stroke-dashoffset', totalLength)
+                    .transition()
+                    .duration(2000)
+                    .delay(500)
+                    .attr('stroke-dashoffset', 0);
+
+                // End labels
+                const lastValue = housingData[city][housingData[city].length - 1];
+                g.append('text')
+                    .attr('x', width + 10)
+                    .attr('y', y(lastValue))
+                    .attr('dy', '0.35em')
+                    .attr('fill', colors[city])
+                    .attr('font-size', '13px')
+                    .attr('font-weight', '600')
+                    .attr('font-family', 'Poppins')
+                    .text(city);
+            });
+
+            // Y-axis label
+            g.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', -60)
+                .attr('x', -height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#6b7280')
+                .attr('font-size', '13px')
+                .attr('font-family', 'Lato')
+                .text('Median Home Value');
+        }
+
+        // Gas Chart
+        function drawGasChart() {
+            const svg = d3.select('#gas-chart');
+            const margin = { top: 40, right: 30, bottom: 50, left: 60 };
+            const width = 900 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            svg.selectAll('*').remove();
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const x = d3.scalePoint()
+                .domain(gasData.dates)
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+                .domain([1.5, 5.5])
+                .range([height, 0]);
+
+            // Grid
+            g.append('g')
+                .call(d3.axisLeft(y)
+                    .tickSize(-width)
+                    .tickFormat('')
+                )
+                .selectAll('line')
+                .attr('stroke', '#e5e7eb');
+
+            g.selectAll('.domain').remove();
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x).tickFormat(d => {
+                    const [y, m] = d.split('-');
+                    return m === '01' ? y : `${y.slice(2)}/${m}`;
+                }))
+                .selectAll('text')
+                .attr('fill', '#6b7280')
+                .attr('font-family', 'Lato');
+
+            g.append('g')
+                .call(d3.axisLeft(y).tickFormat(d => `$${d.toFixed(2)}`))
+                .selectAll('text')
+                .attr('fill', '#6b7280')
+                .attr('font-family', 'Lato');
+
+            // Area for Oklahoma
+            const area = d3.area()
+                .x((d, i) => x(gasData.dates[i]))
+                .y0(height)
+                .y1(d => y(d))
+                .curve(d3.curveMonotoneX);
+
+            g.append('path')
+                .datum(gasData.Oklahoma)
+                .attr('fill', 'rgba(80, 191, 245, 0.15)')
+                .attr('d', area);
+
+            // Lines
+            const line = d3.line()
+                .x((d, i) => x(gasData.dates[i]))
+                .y(d => y(d))
+                .curve(d3.curveMonotoneX);
+
+            ['Oklahoma', 'Texas', 'Colorado', 'National'].forEach(state => {
+                const path = g.append('path')
+                    .datum(gasData[state])
+                    .attr('fill', 'none')
+                    .attr('stroke', colors[state])
+                    .attr('stroke-width', state === 'Oklahoma' ? 4 : 2.5)
+                    .attr('d', line);
+
+                // Animate
+                const totalLength = path.node().getTotalLength();
+                path
+                    .attr('stroke-dasharray', totalLength)
+                    .attr('stroke-dashoffset', totalLength)
+                    .transition()
+                    .duration(2000)
+                    .delay(500)
+                    .attr('stroke-dashoffset', 0);
+            });
+        }
+
+        // Basket Chart
+        function drawBasketChart() {
+            const svg = d3.select('#basket-chart');
+            const margin = { top: 40, right: 30, bottom: 80, left: 60 };
+            const width = 900 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            svg.selectAll('*').remove();
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const cities = ['Tulsa', 'Austin', 'Denver', 'Nashville'];
+            const categories = basketData.categories;
+
+            const x0 = d3.scaleBand()
+                .domain(categories)
+                .rangeRound([0, width])
+                .paddingInner(0.2);
+
+            const x1 = d3.scaleBand()
+                .domain(cities)
+                .rangeRound([0, x0.bandwidth()])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, 110])
+                .range([height, 0]);
+
+            // Grid
+            g.append('g')
+                .call(d3.axisLeft(y)
+                    .tickSize(-width)
+                    .tickFormat('')
+                )
+                .selectAll('line')
+                .attr('stroke', '#e5e7eb');
+
+            g.selectAll('.domain').remove();
+
+            // Baseline at 100
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', width)
+                .attr('y1', y(100))
+                .attr('y2', y(100))
+                .attr('stroke', '#9ca3af')
+                .attr('stroke-dasharray', '5,5')
+                .attr('stroke-width', 2);
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x0))
+                .selectAll('text')
+                .attr('fill', '#6b7280')
+                .attr('font-size', '13px')
+                .attr('font-family', 'Lato');
+
+            g.append('g')
+                .call(d3.axisLeft(y).tickFormat(d => `$${d}`))
+                .selectAll('text')
+                .attr('fill', '#6b7280')
+                .attr('font-family', 'Lato');
+
+            // Bars
+            categories.forEach((cat, i) => {
+                const catGroup = g.append('g')
+                    .attr('transform', `translate(${x0(cat)},0)`);
+
+                cities.forEach(city => {
+                    catGroup.append('rect')
+                        .attr('x', x1(city))
+                        .attr('y', height)
+                        .attr('width', x1.bandwidth())
+                        .attr('height', 0)
+                        .attr('fill', colors[city])
+                        .attr('rx', 4)
+                        .transition()
+                        .duration(1000)
+                        .delay(i * 100 + cities.indexOf(city) * 50)
+                        .attr('y', y(basketData[city][i]))
+                        .attr('height', height - y(basketData[city][i]));
+                });
+            });
+
+            // Legend
+            const legend = g.append('g')
+                .attr('transform', `translate(${width / 2 - 180},${height + 45})`);
+
+            cities.forEach((city, i) => {
+                const lg = legend.append('g')
+                    .attr('transform', `translate(${i * 90},0)`);
+                lg.append('rect')
+                    .attr('width', 14)
+                    .attr('height', 14)
+                    .attr('fill', colors[city])
+                    .attr('rx', 4);
+                lg.append('text')
+                    .attr('x', 20)
+                    .attr('y', 11)
+                    .attr('fill', '#6b7280')
+                    .attr('font-size', '13px')
+                    .attr('font-family', 'Lato')
+                    .text(city);
+            });
+        }
+
+        // Cost Bars Animation
+        function animateCostBars() {
+            document.querySelectorAll('.cost-bar-fill').forEach(bar => {
+                const width = parseFloat(bar.dataset.width);
+                const maxWidth = 107.3;
+                bar.style.width = `${(width / maxWidth) * 100}%`;
+            });
+        }
+
+        // Calculator
+        function updateCalculator() {
+            const input = document.getElementById('salary-input');
+            const salary = parseFloat(input.value.replace(/[^0-9]/g, '')) || 100000;
+            
+            const results = document.getElementById('calc-results');
+            const cities = [
+                { name: 'Tulsa', data: purchasingPower.Tulsa },
+                { name: 'Nashville', data: purchasingPower.Nashville },
+                { name: 'Austin', data: purchasingPower.Austin },
+                { name: 'Denver', data: purchasingPower.Denver }
+            ];
+
+            const tulsaValue = salary * purchasingPower.Tulsa.multiplier;
+
+            results.innerHTML = cities.map(city => {
+                const value = salary * city.data.multiplier;
+                const diff = value - tulsaValue;
+                const diffPercent = ((value - tulsaValue) / tulsaValue * 100).toFixed(1);
+                const diffClass = diff >= 0 ? 'positive' : 'negative';
+                const diffSign = diff >= 0 ? '+' : '';
+                
+                return `
+                    <div class="calc-result-card">
+                        <div class="calc-result-city">${city.name}</div>
+                        <div class="calc-result-value" style="color: ${colors[city.name]}">
+                            $${Math.round(value).toLocaleString()}
+                        </div>
+                        ${city.name !== 'Tulsa' ? `
+                            <div class="calc-result-diff ${diffClass}">
+                                ${diffSign}$${Math.abs(Math.round(diff)).toLocaleString()} (${diffSign}${diffPercent}%)
+                            </div>
+                        ` : '<div class="calc-result-diff positive">Baseline</div>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Format salary input
+        document.getElementById('salary-input').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value) {
+                value = parseInt(value).toLocaleString();
+            }
+            e.target.value = value;
+            updateCalculator();
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Trigger chart animations
+                    if (entry.target.closest('#housing')) {
+                        drawHousingChart();
+                    }
+                    if (entry.target.closest('#gas')) {
+                        drawGasChart();
+                    }
+                    if (entry.target.closest('#basket')) {
+                        drawBasketChart();
+                    }
+                    if (entry.target.closest('#cost')) {
+                        setTimeout(animateCostBars, 300);
+                    }
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Initialize
+        updateCalculator();
+
+        // Animate hero stats
+        function animateValue(id, start, end, duration, prefix = '', suffix = '') {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = prefix + value.toLocaleString() + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Animate hero on load
+        setTimeout(() => {
+            animateValue('hero-savings', 0, 18675, 2000, '$');
+        }, 500);
+    </script>
+</body>
+</html>
