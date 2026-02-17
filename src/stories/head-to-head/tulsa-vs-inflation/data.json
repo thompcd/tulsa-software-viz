@@ -20,6 +20,10 @@
       {
         "name": "AAA Gas Prices",
         "url": "https://gasprices.aaa.com/"
+      },
+      {
+        "name": "MIT Living Wage Calculator",
+        "url": "https://livingwage.mit.edu/"
       }
     ]
   },

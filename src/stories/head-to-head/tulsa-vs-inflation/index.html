@@ -414,6 +414,157 @@
         .calc-result-diff.positive { color: #10b981; }
         .calc-result-diff.negative { color: #ef4444; }
 
+        /* Wage Breakdown Section */
+        .wage-comparison { max-width: 900px; margin: 0 auto; }
+
+        .wage-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .wage-tab {
+            padding: 12px 24px;
+            border: 2px solid #e5e7eb;
+            border-radius: 30px;
+            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .wage-tab:hover { border-color: var(--cyan-light); }
+        .wage-tab.active {
+            background: var(--primary-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        .wage-breakdown-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .wage-city-col { text-align: center; }
+        .wage-city-col h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .wage-bar-stack {
+            height: 300px;
+            background: var(--bg-section);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column-reverse;
+            position: relative;
+        }
+
+        .wage-bar-segment {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            transition: height 0.6s ease-out;
+        }
+
+        .wage-remaining {
+            margin-top: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .wage-remaining.negative { color: #ef4444; }
+        .wage-remaining.positive { color: #10b981; }
+
+        .wage-legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 24px;
+            font-size: 13px;
+        }
+
+        .wage-legend i {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 6px;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .benefits-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .benefits-intro {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .benefit-card {
+            background: var(--bg-section);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .benefit-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .benefit-threshold {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .benefit-note {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .wage-breakdown-container {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .wage-bar-stack { height: 200px; }
+            .wage-tabs { flex-wrap: wrap; }
+        }
+
         /* Supporting Section */
         .supporting-title {
             font-family: 'Poppins', sans-serif;
@@ -687,11 +838,105 @@
         </div>
     </section>
 
-    <!-- Section 5: Supporting Evidence - Other Cities -->
-    <section class="scrolly-section" id="comparison">
+    <!-- Section 5: Wage Reality Check -->
+    <section class="scrolly-section" id="wages">
         <div class="container">
             <div class="section-header fade-in">
-                <div class="section-number">05 — CONTEXT</div>
+                <div class="section-number">05 — WAGE REALITY</div>
+                <h2 class="section-title">Where Does Your Paycheck Go?</h2>
+                <p class="section-subtitle">See how essential costs consume different income levels — and why Tulsa's advantage matters most to working families.</p>
+            </div>
+
+            <div class="wage-comparison fade-in">
+                <div class="wage-tabs">
+                    <button class="wage-tab active" data-wage="10">$10/hr</button>
+                    <button class="wage-tab" data-wage="20">$20/hr</button>
+                    <button class="wage-tab" data-wage="parent">$20/hr + Child</button>
+                </div>
+
+                <div class="wage-breakdown-container">
+                    <div class="wage-city-col">
+                        <h4>Tulsa</h4>
+                        <div class="wage-bar-stack" id="tulsa-stack"></div>
+                        <div class="wage-remaining" id="tulsa-remaining"></div>
+                    </div>
+                    <div class="wage-city-col">
+                        <h4>Austin</h4>
+                        <div class="wage-bar-stack" id="austin-stack"></div>
+                        <div class="wage-remaining" id="austin-remaining"></div>
+                    </div>
+                    <div class="wage-city-col">
+                        <h4>Denver</h4>
+                        <div class="wage-bar-stack" id="denver-stack"></div>
+                        <div class="wage-remaining" id="denver-remaining"></div>
+                    </div>
+                </div>
+
+                <div class="wage-legend">
+                    <span><i style="background: #ef4444"></i> Housing</span>
+                    <span><i style="background: #f97316"></i> Food</span>
+                    <span><i style="background: #eab308"></i> Healthcare</span>
+                    <span><i style="background: #22c55e"></i> Transport</span>
+                    <span><i style="background: #8b5cf6"></i> Childcare</span>
+                    <span><i style="background: #10b981"></i> Remaining</span>
+                </div>
+            </div>
+
+            <div class="insight-grid">
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">👶</div>
+                    <div class="insight-value">$9,328</div>
+                    <div class="insight-label">Childcare Savings</div>
+                    <div class="insight-desc">Tulsa childcare: $11,150/yr vs Denver's $20,478 — a working parent's biggest win</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">🏠</div>
+                    <div class="insight-value">$8,664</div>
+                    <div class="insight-label">Housing Gap</div>
+                    <div class="insight-desc">Annual rent savings vs Denver — that's $722/month back in your pocket</div>
+                </div>
+                <div class="insight-card fade-in">
+                    <div class="insight-icon">📊</div>
+                    <div class="insight-value">$21.28</div>
+                    <div class="insight-label">Living Wage</div>
+                    <div class="insight-desc">Tulsa's living wage vs Denver's $27.41 — a $12,800/yr difference to meet basic needs</div>
+                </div>
+            </div>
+
+            <div class="benefits-section fade-in">
+                <h3>Benefits & Safety Net</h3>
+                <p class="benefits-intro">Lower wages often qualify for assistance programs. Here's the threshold reality:</p>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-name">SNAP (Food Stamps)</div>
+                        <div class="benefit-threshold">≤ $2,430/mo for family of 3</div>
+                        <div class="benefit-note">$10/hr worker qualifies ✓</div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-name">Medicaid (OK SoonerCare)</div>
+                        <div class="benefit-threshold">≤ 138% FPL (~$25,820/yr single)</div>
+                        <div class="benefit-note">$10/hr worker qualifies ✓</div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-name">EITC (Earned Income Credit)</div>
+                        <div class="benefit-threshold">Up to $7,830 for family with kids</div>
+                        <div class="benefit-note">Both wage levels may qualify</div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-name">OK Childcare Subsidy</div>
+                        <div class="benefit-threshold">≤ 85% SMI (~$48K for family of 3)</div>
+                        <div class="benefit-note">$20/hr parent may qualify ✓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Supporting Evidence - Other Cities -->
+    <section class="scrolly-section alt-bg" id="comparison">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-number">06 — CONTEXT</div>
                 <h2 class="section-title">How Other Cities Compare</h2>
                 <p class="section-subtitle">Tulsa isn't just cheaper than the national average — it beats popular relocation destinations too.</p>
             </div>
@@ -804,6 +1049,84 @@
             Denver: '#8b5cf6',
             Nashville: '#f472b6'
         };
+
+        // Living wage data from MIT Living Wage Calculator (2026)
+        const livingCosts = {
+            // Single adult, no children
+            single: {
+                Tulsa: { housing: 11153, food: 4250, medical: 3567, transport: 9563, childcare: 0 },
+                Austin: { housing: 17779, food: 4047, medical: 3075, transport: 9016, childcare: 0 },
+                Denver: { housing: 19817, food: 4666, medical: 3199, transport: 8188, childcare: 0 }
+            },
+            // Single adult with 1 child
+            parent: {
+                Tulsa: { housing: 14522, food: 6235, medical: 9202, transport: 11068, childcare: 11150 },
+                Austin: { housing: 22338, food: 5937, medical: 8955, transport: 10435, childcare: 12091 },
+                Denver: { housing: 25197, food: 6844, medical: 8272, transport: 9476, childcare: 20478 }
+            }
+        };
+
+        // Wage breakdown visualization
+        function updateWageBreakdown(wage) {
+            const hourlyWages = { '10': 10, '20': 20, 'parent': 20 };
+            const hourly = hourlyWages[wage];
+            const annual = hourly * 2080; // Full-time hours
+            const afterTax = annual * 0.85; // Rough estimate after payroll taxes
+
+            const costData = wage === 'parent' ? livingCosts.parent : livingCosts.single;
+            const cities = ['Tulsa', 'Austin', 'Denver'];
+            const costColors = {
+                housing: '#ef4444',
+                food: '#f97316',
+                medical: '#eab308',
+                transport: '#22c55e',
+                childcare: '#8b5cf6'
+            };
+
+            cities.forEach(city => {
+                const stack = document.getElementById(`${city.toLowerCase()}-stack`);
+                const remaining = document.getElementById(`${city.toLowerCase()}-remaining`);
+                const costs = costData[city];
+                const totalCosts = Object.values(costs).reduce((a, b) => a + b, 0);
+                const leftover = afterTax - totalCosts;
+
+                stack.innerHTML = '';
+
+                // Calculate percentages
+                const categories = ['housing', 'food', 'medical', 'transport'];
+                if (wage === 'parent') categories.push('childcare');
+
+                categories.forEach(cat => {
+                    if (costs[cat] > 0) {
+                        const pct = (costs[cat] / afterTax) * 100;
+                        const segment = document.createElement('div');
+                        segment.className = 'wage-bar-segment';
+                        segment.style.height = `${Math.min(pct, 100)}%`;
+                        segment.style.background = costColors[cat];
+                        segment.textContent = pct > 8 ? `$${(costs[cat]/1000).toFixed(1)}k` : '';
+                        stack.appendChild(segment);
+                    }
+                });
+
+                // Remaining
+                if (leftover >= 0) {
+                    remaining.className = 'wage-remaining positive';
+                    remaining.textContent = `+$${Math.round(leftover).toLocaleString()} left`;
+                } else {
+                    remaining.className = 'wage-remaining negative';
+                    remaining.textContent = `-$${Math.abs(Math.round(leftover)).toLocaleString()} short`;
+                }
+            });
+        }
+
+        // Wage tab switching
+        document.querySelectorAll('.wage-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.wage-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                updateWageBreakdown(tab.dataset.wage);
+            });
+        });
 
         // Housing Chart (Tulsa vs National)
         function drawHousingChart() {
@@ -985,6 +1308,7 @@
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
         updateCalculator();
+        updateWageBreakdown('10'); // Initialize with $10/hr view
     </script>
 </body>
 </html>
